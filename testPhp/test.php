@@ -4,60 +4,55 @@
  * 2. Должна быть проверка на существование файла
  * 3. Должна быть проверка на возможность чтения файла
  * 4. Должна быть проверка на возможность записи в файл
- * 5. Использовать блокировку файла на время записи
+ * 5. Использовать блокировку файла на время чтения и записи
  * 6. Использовать приведение типов к int, если файл содержит например текст
  * Проблема при параллельном использовании этого счетчика
  * */
 
 $fullPath = __DIR__."/counter.txt"; // Full Path
 $logPath = __DIR__."/log.txt"; // Full Path
+$logMessage = '';
 
-//$fp = fopen($fullPath, 'c+');
-//flock($fp, LOCK_SH | LOCK_EX | LOCK_NB); // Блокирование файла для записи и чтения
-//$fileSize = filesize($fullPath);
-//if($fileSize > 0){
-//    $str = fread($fp, $fileSize);
-//    $currentCount = (int) $str;
-//}else{
-//    $currentCount = 0;
-//}
-//$message = " The file is writable\n";
-//fwrite($fp, (string) ($currentCount + 1));
-//flock($fp, LOCK_UN | LOCK_NB); // Снятие блокировки
-//fclose($fp);
+if(file_exists($fullPath)){
+    $fpRead = fopen($fullPath, "r");
+    // проверка файла на чтение
+    if ($fpRead) {
+        $locked = flock($fpRead, LOCK_SH, $waitIfLocked); // Блокирование файла для чтения
+        if($locked) {
+            $fileSize = filesize($fullPath) > 0 ? filesize($fullPath) : 80;
+            $count = (int) fread($fpRead, $fileSize);
+            flock($fpRead, LOCK_UN); // Снятие блокировки
+            fclose($fpRead);
 
-$fp = fopen("/tmp/lock.txt", "r+");
-
-if (flock($fp, LOCK_EX)) { // выполняем эксклюзивную блокировку
-    ftruncate($fp, 0); // очищаем файл
-    fwrite($fp, "Что-нибудь пишем сюда\n");
-    fflush($fp);        // очищаем вывод перед отменой блокировки
-    flock($fp, LOCK_UN); // снимаем блокировку
-} else {
-    echo "Не удалось получить блокировку!";
+            $fpWrite = fopen($fullPath, "w");
+            $locked = flock($fpWrite, LOCK_EX, $waitIfLocked); // Блокирование файла для записи
+            // проверка файла на запись
+            if($fpWrite){
+                if($locked) {
+                    fwrite($fpWrite, $count + 1);
+                    fflush($fpWrite);
+                    flock($fpWrite, LOCK_UN); // Снятие блокировки
+                } else {
+                    $logMessage .= "File blocked on write! Status - $waitIfLocked\n";
+                }
+                fclose($fpWrite);
+            }else{
+                $logMessage .= "The file is not writable\n";
+                fclose($fpWrite);
+            }
+        }else{
+            fclose($fpRead);
+            $logMessage .= "File blocked on read! Status - $waitIfLocked !\n";
+        }
+    } else {
+        $logMessage .= "The file is not readable\n";
+        fclose($fpRead);
+    }
+}else{
+    file_put_contents($fullPath, 1);
 }
 
-fclose($fp);
-
-//if(file_exists($fullPath)){
-//    if (is_readable($fullPath)) {
-//        $message .= "The file is readable\n";
-//        $currentCount = (int) file_get_contents($fullPath);
-//        if(is_writable($fullPath)){
-//
-//        }else{
-//            $message .= "The file is not writable\n\n";
-//        }
-//    } else {
-//        $message .= "The file is not readable\n\n";
-//    }
-//
-//}else{
-//    file_put_contents($fullPath, 1);
-//    $message .= "The file is create\n\n";
-//}
-$handle = fopen($fullPath, 'c+');
-flock($handle, LOCK_SH | LOCK_EX | LOCK_NB); // Блокирование файла для записи и чтения
-$contents = (int) fread($handle, filesize($fullPath));
-fclose($handle);
-file_put_contents($logPath,($contents+5)."\n",FILE_APPEND | LOCK_EX);
+//логирование ошибок
+if(!empty($logMessage)){
+    file_put_contents($logPath, $logMessage);
+}
