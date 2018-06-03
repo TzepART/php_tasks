@@ -17,14 +17,16 @@ function myFunction ($a, $b){
     list($integerPartA, $divisionalPartA) = getIntegerAndDivisionalParts($a);
     list($integerPartB, $divisionalPartB) = getIntegerAndDivisionalParts($b);
 
+    //сложение дробной части
     $arNumbersA = str_split($divisionalPartA);
     $arNumbersB = str_split($divisionalPartB);
-
     list($integerPart, $resultDivisionAr) = getSummDivisionPartArray($arNumbersA, $arNumbersB);
     if(!empty($resultDivisionAr)){
         array_unshift($resultDivisionAr, '.');
     }
 
+    //сложение целой части
+    // TODO перенести сюда добавление единицы
     $arNumbersA = str_split($integerPartA);
     $arNumbersB = str_split($integerPartB);
     $resultIntegerAr = getSummIntegerPartArray($arNumbersA, $arNumbersB, $integerPart);
@@ -38,6 +40,7 @@ function myFunction ($a, $b){
 /**
  * @param $a
  * @return array
+ * TODO добавить выброс исключения, если число содержит более одной точки
  */
 function getIntegerAndDivisionalParts($a): array
 {
@@ -150,7 +153,7 @@ function additionTwoSequences($sequence1, $sequence2, $additionalNumber = 0){
     return [$resultSequence,$additionalElement];
 }
 
-$a = "3434343433434343343434334343433434343343434334343433434343343434334343433434343343434334343433434343434.055";
+$a = "3434343433434343343434334343433434343343434334343433434343343434334343433434343343434334343433434343434.000000";
 $b = "54654645645645645564564556456455645645564564556456455645645564564556456455645645564564556456455645645564564556456455645645.666665645645654";
 
 withBcadd($a, $b);
