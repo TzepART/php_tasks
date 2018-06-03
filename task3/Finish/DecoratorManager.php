@@ -1,4 +1,5 @@
 <?php
+
 namespace src\Decorator;
 
 use DateTime;
@@ -7,33 +8,43 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Log\LoggerInterface;
 use src\Integration\DataProvider;
 
-class DecoratorManager extends DataProvider
+/**
+ * Class DecoratorManager
+ * @package src\Decorator
+ */
+class DecoratorManager
 {
-    // TODO Свойства лучше объявить приватными
-    public $cache;
-    public $logger;
+    /**
+     * @var CacheItemPoolInterface
+     */
+    private $cache;
 
     /**
-     * @param string $host
-     * @param string $user
-     * @param string $password
-     * @param CacheItemPoolInterface $cache
+     * @var LoggerInterface
      */
-    public function __construct($host, $user, $password, CacheItemPoolInterface $cache)
-    {
-        parent:: __construct($host, $user, $password);
-        $this->cache = $cache;
-    }
+    private $logger;
 
-    public function setLogger(LoggerInterface $logger)
+    /**
+     * @var DataProvider
+     */
+    private $dataProvider;
+
+    /**
+     * @param DataProvider $dataProvider
+     * @param CacheItemPoolInterface $cache
+     * @param LoggerInterface $logger
+     */
+    public function __construct(DataProvider $dataProvider, CacheItemPoolInterface $cache, LoggerInterface $logger)
     {
+        $this->dataProvider = $dataProvider;
+        $this->cache = $cache;
         $this->logger = $logger;
     }
+
 
     /**
      * {@inheritdoc}
      */
-    // TODO некорректное название метода. Метод может вернуть различные данные
     public function getResponse(array $input)
     {
         try {
@@ -42,7 +53,7 @@ class DecoratorManager extends DataProvider
             if ($cacheItem->isHit()) {
                 return $cacheItem->get();
             }
-            $result = parent::get($input);
+            $result = $this->dataProvider->get($input);
             $cacheItem
                 ->set($result)
                 ->expiresAt(
@@ -55,8 +66,12 @@ class DecoratorManager extends DataProvider
         return [];
     }
 
-    // TODO имеет смысл сделать приватным
-    public function getCacheKey(array $input)
+
+    /**
+     * @param array $input
+     * @return string
+     */
+    private function getCacheKey(array $input)
     {
         return json_encode($input);
     }

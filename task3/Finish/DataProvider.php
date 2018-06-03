@@ -5,17 +5,27 @@
  * Date: 03/06/2018
  * Time: 02:21
  */
-/**
- * Требования были : Добавить возможность получения данных от стороннего сервиса
- *
- */
+
 
 namespace src\Integration;
 
+/**
+ * Class DataProvider
+ * @package src\Integration
+ */
 class DataProvider
 {
+    /**
+     * @var string
+     */
     private $host;
+    /**
+     * @var string
+     */
     private $user;
+    /**
+     * @var string
+     */
     private $password;
 
     /**
@@ -36,6 +46,7 @@ class DataProvider
      */
     public function get(array $request)
     {
+        // returns a response from external service
         return [];
     }
 }
