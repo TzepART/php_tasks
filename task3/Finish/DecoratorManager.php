@@ -47,23 +47,27 @@ class DecoratorManager
      */
     public function getResponse(array $input)
     {
+        $result = [];
         try {
             $cacheKey = $this->getCacheKey($input);
             $cacheItem = $this->cache->getItem($cacheKey);
             if ($cacheItem->isHit()) {
-                return $cacheItem->get();
+                $result = $cacheItem->get();
+            }else{
+                $result = $this->dataProvider->get($input);
+                $cacheItem
+                    ->set($result)
+                    ->expiresAt(
+                        (new DateTime())->modify('+1 day')
+                    );
             }
-            $result = $this->dataProvider->get($input);
-            $cacheItem
-                ->set($result)
-                ->expiresAt(
-                    (new DateTime())->modify('+1 day')
-                );
-            return $result;
-        } catch (Exception $e) {
-            $this->logger->critical('Error');
+        }catch(\InvalidArgumentException $e) {
+            $this->logger->critical($e->getMessage());
+        }catch (Exception $e) {
+            $this->logger->critical($e->getMessage());
         }
-        return [];
+
+        return $result;
     }
 
 
