@@ -9,6 +9,7 @@ use src\Integration\DataProvider;
 
 class DecoratorManager extends DataProvider
 {
+    // TODO Свойства лучше объявить приватными
     public $cache;
     public $logger;
 
@@ -32,6 +33,7 @@ class DecoratorManager extends DataProvider
     /**
      * {@inheritdoc}
      */
+    // TODO некорректное название метода. Метод может вернуть различные данные
     public function getResponse(array $input)
     {
         try {
@@ -53,6 +55,7 @@ class DecoratorManager extends DataProvider
         return [];
     }
 
+    // TODO имеет смысл сделать приватным
     public function getCacheKey(array $input)
     {
         return json_encode($input);
