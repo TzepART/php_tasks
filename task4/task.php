@@ -63,12 +63,23 @@ function getIntegerAndDivisionalParts($a): array
 function getSummDivisionPartArray($arNumbersA, $arNumbersB): array
 {
     $integerPart = 0;
+    $additionalNumbersAr = [];
 
+    $sizeA = count($arNumbersA);
+    $sizeB = count($arNumbersB);
+
+    if ($sizeA > $sizeB) {
+        $additionalNumbersAr = array_slice($arNumbersA, $sizeB);
+        $arNumbersA = array_slice($arNumbersA, 0, $sizeB);
+    } else if($sizeB > $sizeA) {
+        $additionalNumbersAr = array_slice($arNumbersB, $sizeA);
+        $arNumbersB = array_slice($arNumbersB, 0, $sizeA);
+    }
+
+    $sizeA = count($arNumbersA);
+    $sizeB = count($arNumbersB);
     $arReversNumbersA = array_reverse($arNumbersA);
     $arReversNumbersB = array_reverse($arNumbersB);
-
-    $sizeA = count($arReversNumbersA);
-    $sizeB = count($arReversNumbersB);
 
     if ($sizeA > $sizeB) {
         $largeNumberAr = $arReversNumbersA;
@@ -107,6 +118,9 @@ function getSummDivisionPartArray($arNumbersA, $arNumbersB): array
     }
 
     $resultAr = array_reverse($resultReversAr);
+    if(!empty($additionalNumbersAr)){
+        $resultAr = array_merge($resultAr,$additionalNumbersAr);
+    }
 
     return array($integerPart,$resultAr);
 }
@@ -169,8 +183,8 @@ function getSummIntegerPartArray($arNumbersA, $arNumbersB, $additionalNumber = 0
 }
 
 
-$a = "5350353422647252425087405404345435456456456456456456755917897812643.555";
-$b = "53503534226472524250874054075591789781264330331690.66666";
+$a = "343434343434.055";
+$b = "546546456456456455645645.666665645645654";
 
 withBcadd($a, $b);
 myFunction($a, $b);
