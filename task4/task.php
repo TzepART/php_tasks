@@ -19,6 +19,7 @@ function myFunction ($a, $b){
 
     $arNumbersA = str_split($divisionalPartA);
     $arNumbersB = str_split($divisionalPartB);
+
     list($integerPart, $resultDivisionAr) = getSummDivisionPartArray($arNumbersA, $arNumbersB);
     if(!empty($resultDivisionAr)){
         array_unshift($resultDivisionAr, '.');
@@ -62,7 +63,6 @@ function getIntegerAndDivisionalParts($a): array
  */
 function getSummDivisionPartArray($arNumbersA, $arNumbersB): array
 {
-    $integerPart = 0;
     $additionalNumbersAr = [];
 
     $sizeA = count($arNumbersA);
@@ -76,48 +76,8 @@ function getSummDivisionPartArray($arNumbersA, $arNumbersB): array
         $arNumbersB = array_slice($arNumbersB, 0, $sizeA);
     }
 
-    $sizeA = count($arNumbersA);
-    $sizeB = count($arNumbersB);
-    $arReversNumbersA = array_reverse($arNumbersA);
-    $arReversNumbersB = array_reverse($arNumbersB);
+    list($resultAr,$integerPart) = additionTwoSequences($arNumbersA, $arNumbersB);
 
-    if ($sizeA > $sizeB) {
-        $largeNumberAr = $arReversNumbersA;
-        $smallNumberAr = $arReversNumbersB;
-        $arSize = $sizeA;
-    } else {
-        $largeNumberAr = $arReversNumbersB;
-        $smallNumberAr = $arReversNumbersA;
-        $arSize = $sizeB;
-    }
-
-    $resultReversAr = [];
-    foreach ($largeNumberAr as $index => $number) {
-        $resultReversAr[] = $number + (isset($smallNumberAr[$index]) ? $smallNumberAr[$index] : 0);
-    }
-
-    for ($i = 0; $i < $arSize; $i++) {
-        $item = $resultReversAr[$i];
-        if ($item >= 10) {
-            $diff = 1;
-            $tempResultValue = $item - 10;
-        } else {
-            $diff = 0;
-            $tempResultValue = $item;
-        }
-
-        $resultReversAr[$i] = $tempResultValue;
-
-        if ($diff == 1) {
-            if (isset($resultReversAr[$i + 1])) {
-                $resultReversAr[$i + 1] = $resultReversAr[$i + 1] + $diff;
-            } else {
-                $integerPart = $diff;
-            }
-        }
-    }
-
-    $resultAr = array_reverse($resultReversAr);
     if(!empty($additionalNumbersAr)){
         $resultAr = array_merge($resultAr,$additionalNumbersAr);
     }
@@ -133,19 +93,27 @@ function getSummDivisionPartArray($arNumbersA, $arNumbersB): array
  */
 function getSummIntegerPartArray($arNumbersA, $arNumbersB, $additionalNumber = 0): array
 {
-    $arReversNumbersA = array_reverse($arNumbersA);
-    $arReversNumbersB = array_reverse($arNumbersB);
+    list($resultAr) = additionTwoSequences($arNumbersA, $arNumbersB, $additionalNumber);
 
-    $sizeA = count($arReversNumbersA);
-    $sizeB = count($arReversNumbersB);
+    return $resultAr;
+}
+
+function additionTwoSequences($sequence1, $sequence2, $additionalNumber = 0){
+    $additionalElement = 0;
+
+    $arReversSequence1 = array_reverse($sequence1);
+    $arReversSequence2 = array_reverse($sequence2);
+
+    $sizeA = count($arReversSequence1);
+    $sizeB = count($arReversSequence2);
 
     if ($sizeA > $sizeB) {
-        $largeNumberAr = $arReversNumbersA;
-        $smallNumberAr = $arReversNumbersB;
+        $largeNumberAr = $arReversSequence1;
+        $smallNumberAr = $arReversSequence2;
         $arSize = $sizeA;
     } else {
-        $largeNumberAr = $arReversNumbersB;
-        $smallNumberAr = $arReversNumbersA;
+        $largeNumberAr = $arReversSequence2;
+        $smallNumberAr = $arReversSequence1;
         $arSize = $sizeB;
     }
 
@@ -172,16 +140,15 @@ function getSummIntegerPartArray($arNumbersA, $arNumbersB, $additionalNumber = 0
             if (isset($resultReversAr[$i + 1])) {
                 $resultReversAr[$i + 1] = $resultReversAr[$i + 1] + $diff;
             } else {
-                $resultReversAr[] = $diff;
+                $additionalElement = $diff;
             }
         }
     }
 
-    $resultAr = array_reverse($resultReversAr);
+    $resultSequence = array_reverse($resultReversAr);
 
-    return $resultAr;
+    return [$resultSequence,$additionalElement];
 }
-
 
 $a = "3434343433434343343434334343433434343343434334343433434343343434334343433434343343434334343433434343434.055";
 $b = "54654645645645645564564556456455645645564564556456455645645564564556456455645645564564556456455645645564564556456455645645.666665645645654";
