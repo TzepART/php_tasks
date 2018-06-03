@@ -43,7 +43,8 @@ class DecoratorManager
 
 
     /**
-     * {@inheritdoc}
+     * @param array $input
+     * @return array
      */
     public function getResponse(array $input)
     {
