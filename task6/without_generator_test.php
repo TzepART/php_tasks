@@ -14,7 +14,11 @@ $result = '';
 
 for($count=1000000; $count--;)
 {
-    $val=$count/2;
+    $array[]=$count/2;
+}
+
+foreach($array as $val)
+{
     $val += 145.56;
     $result .= $val;
 }
