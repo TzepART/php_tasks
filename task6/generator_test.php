@@ -8,6 +8,8 @@
 
 $start_time=microtime(true);
 $result = '';
+
+
 function it()
 {
     for($count=1000000; $count--;)
@@ -15,11 +17,13 @@ function it()
         yield $count/2;
     }
 }
+
 foreach(it() as $val)
 {
     $val += 145.56;
     $result .= $val;
 }
+
 $end_time=microtime(true);
 
 echo "with generator\n";

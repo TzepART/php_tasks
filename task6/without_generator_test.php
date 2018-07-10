@@ -10,15 +10,15 @@
 $start_time=microtime(true);
 $array = [];
 $result = '';
+
+
 for($count=1000000; $count--;)
 {
-    $array[]=$count/2;
-}
-foreach($array as $val)
-{
+    $val=$count/2;
     $val += 145.56;
     $result .= $val;
 }
+
 $end_time=microtime(true);
 
 echo "without generator\n";
