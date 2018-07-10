@@ -7,24 +7,22 @@
  */
 
 
-$start_time=microtime(true);
+$start_time = microtime(true);
 $array = [];
 $result = '';
 
 
-for($count=1000000; $count--;)
-{
-    $array[]=$count/2;
+for ($count = 1000000; $count--;) {
+    $array[] = $count / 2;
 }
 
-foreach($array as $val)
-{
+foreach ($array as $val) {
     $val += 145.56;
     $result .= $val;
 }
 
-$end_time=microtime(true);
+$end_time = microtime(true);
 
 echo "without generator\n";
 echo "time: ", bcsub($end_time, $start_time, 4), "\n";
-echo "memory (kByte): ", memory_get_peak_usage(true)/1024, "\n";
+echo "memory (kByte): ", memory_get_peak_usage(true) / 1024, "\n";
