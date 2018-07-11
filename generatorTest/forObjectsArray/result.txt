@@ -1,0 +1,8 @@
+without generator
+time: 20.2239
+memory (kByte): 634884
+
+with generator
+time: 18.2157
+memory (kByte): 2048
+
