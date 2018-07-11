@@ -22,6 +22,9 @@ class MySplStack{
         $this->stack = new SplStack();
     }
 
+    /**
+     * @return $this
+     */
     public function initStack()
     {
         $this->stack[] = 1;
@@ -33,6 +36,9 @@ class MySplStack{
         return $this;
     }
 
+    /**
+     * @return $this
+     */
     public function outputDataFromStack()
     {
         $this->stack->rewind();
