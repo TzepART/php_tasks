@@ -23,13 +23,15 @@ function getLines($file) {
     }
 }
 
+$length = 0;
 foreach (getLines("file.txt") as $n => $line) {
-    echo $line;
+    $length += strlen($line);
 }
 
 $end_time = microtime(true);
 
-echo "\n";
+echo "$length\n";
+
 echo "with generator\n";
 echo "time: ", bcsub($end_time, $start_time, 4), "\n";
 echo "memory (kByte): ", memory_get_peak_usage(true) / 1024, "\n";
