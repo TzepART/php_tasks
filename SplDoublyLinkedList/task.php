@@ -6,6 +6,36 @@
  * Time: 14:59
  */
 
+/*
+ * Придумать примеры использующие методы класса SplDoublyLinkedList
+ * add
+ * bottom
+ * count
+ * current
+ * getIteratorMode
+ * isEmpty
+ * key
+ * next
+ * offsetExists
+ * offsetGet
+ * offsetSet
+ * offsetUnset
+ * pop
+ * prev
+ * push
+ * rewind
+ * serialize
+ * setIteratorMode
+ * shift
+ * top
+ * unserialize
+ * unshift
+ * valid
+ */
+
+/**
+ * Class DoublyLinkedListDecorator
+ */
 class DoublyLinkedListDecorator{
     /**
      * @var SplDoublyLinkedList
@@ -35,12 +65,18 @@ class DoublyLinkedListDecorator{
         return $this;
     }
 
+    public function addNewElement(int $key,$value)
+    {
+        $this->doublyLinkedList->add($key,$value);
+        echo "Add New Element \n";
+    }
+
     /**
      * @return $this
      */
     public function viewListElements()
     {
-        echo "\nView List Elements \n";
+        echo "View List Elements \n";
         for ($this->doublyLinkedList->rewind();$this->doublyLinkedList->valid();$this->doublyLinkedList->next()){
             $this->viewElement();
         }
@@ -53,7 +89,7 @@ class DoublyLinkedListDecorator{
      */
     public function viewListElementsInReversOrder()
     {
-        echo "\nView List Elements In Revers Order \n";
+        echo "View List Elements In Revers Order \n";
         $this->doublyLinkedList->setIteratorMode(SplDoublyLinkedList::IT_MODE_LIFO);
 
         $this->doublyLinkedList->rewind();
@@ -77,7 +113,12 @@ class DoublyLinkedListDecorator{
 
 $doublyLinkedListDecorator = (new DoublyLinkedListDecorator(new SplDoublyLinkedList()))->initDoublyLinkedList();
 
+//$doublyLinkedListDecorator->viewListElements();
+
+//$doublyLinkedListDecorator->viewListElementsInReversOrder();
+
+$doublyLinkedListDecorator->addNewElement(3,"SeventhElement");
 $doublyLinkedListDecorator->viewListElements();
-$doublyLinkedListDecorator->viewListElementsInReversOrder();
+
 
 
