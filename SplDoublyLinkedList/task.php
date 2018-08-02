@@ -6,24 +6,78 @@
  * Time: 14:59
  */
 
-$doublyLinkedList = new SplDoublyLinkedList();
+class DoublyLinkedListDecorator{
+    /**
+     * @var SplDoublyLinkedList
+     */
+    private $doublyLinkedList;
 
-$doublyLinkedList->push( 'firstElement');
-$doublyLinkedList->push( 'secondElement');
-$doublyLinkedList->push( 'thirdElement');
-$doublyLinkedList->push( 'fourthElement');
-$doublyLinkedList->push( 'fifthElement');
+    /**
+     * DoublyLinkedListDecorator constructor.
+     * @param SplDoublyLinkedList $doublyLinkedList
+     */
+    public function __construct(SplDoublyLinkedList $doublyLinkedList)
+    {
+        $this->doublyLinkedList = $doublyLinkedList;
+    }
 
+    /**
+     * @return $this
+     */
+    public function initDoublyLinkedList()
+    {
+        $this->doublyLinkedList->push( 'firstElement');
+        $this->doublyLinkedList->push( 'secondElement');
+        $this->doublyLinkedList->push( 'thirdElement');
+        $this->doublyLinkedList->push( 'fourthElement');
+        $this->doublyLinkedList->push( 'fifthElement');
 
-for ($doublyLinkedList->rewind();$doublyLinkedList->valid();$doublyLinkedList->next()){
-    var_dump($doublyLinkedList->key(),$doublyLinkedList->current());
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function viewListElements()
+    {
+        echo "\nView List Elements \n";
+        for ($this->doublyLinkedList->rewind();$this->doublyLinkedList->valid();$this->doublyLinkedList->next()){
+            $this->viewElement();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function viewListElementsInReversOrder()
+    {
+        echo "\nView List Elements In Revers Order \n";
+        $this->doublyLinkedList->setIteratorMode(SplDoublyLinkedList::IT_MODE_LIFO);
+
+        $this->doublyLinkedList->rewind();
+        while($this->doublyLinkedList->valid()){
+            $this->viewElement();
+            $this->doublyLinkedList->next();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    protected function viewElement()
+    {
+        echo 'Key - '.$this->doublyLinkedList->key().'; Value - '.$this->doublyLinkedList->current()."\n";
+        return $this;
+    }
 }
 
-//revert list
-$doublyLinkedList->setIteratorMode(SplDoublyLinkedList::IT_MODE_LIFO);
+$doublyLinkedListDecorator = (new DoublyLinkedListDecorator(new SplDoublyLinkedList()))->initDoublyLinkedList();
 
-$doublyLinkedList->rewind();
-while($doublyLinkedList->valid()){
-    echo $doublyLinkedList->current()."\n";
-    $doublyLinkedList->next();
-}
+$doublyLinkedListDecorator->viewListElements();
+$doublyLinkedListDecorator->viewListElementsInReversOrder();
+
+
