@@ -78,6 +78,16 @@ class DoublyLinkedListDecorator{
     }
 
     /**
+     * Get value of first element
+     * http://php.net/manual/ru/spldoublylinkedlist.bottom.php
+     * @return mixed
+     */
+    public function getFirstElementValue()
+    {
+        return $this->doublyLinkedList->bottom();
+    }
+
+    /**
      * @return $this
      */
     public function viewListElements()
@@ -110,7 +120,7 @@ class DoublyLinkedListDecorator{
     /**
      * @return $this
      */
-    protected function viewElement()
+    public function viewElement()
     {
         echo 'Key - '.$this->doublyLinkedList->key().'; Value - '.$this->doublyLinkedList->current()."\n";
         return $this;
@@ -123,8 +133,10 @@ $doublyLinkedListDecorator = (new DoublyLinkedListDecorator(new SplDoublyLinkedL
 
 //$doublyLinkedListDecorator->viewListElementsInReversOrder();
 
-$doublyLinkedListDecorator->addNewElement(3,"SeventhElement");
-$doublyLinkedListDecorator->viewListElements();
+//$doublyLinkedListDecorator->addNewElement(3,"SeventhElement");
+//$doublyLinkedListDecorator->viewListElements();
 
+$element = $doublyLinkedListDecorator->getFirstElementValue();
+echo 'First element - '.$element."\n";
 
 
