@@ -11,4 +11,4 @@ Examples using some PHP features
 3. The counter of the script call with the data stored in the file. [link](task2/task.php)
 4. A function that returns the sum of large numbers, which are used as strings. [link](task4/task.php)
 5. SQL query that will print all the omissions [link](task5/task.sql)
-6, Examples using SplDoublyLinkedList [link](SplDoublyLinkedList/task.php)
+6. Examples using SplDoublyLinkedList [link](SplDoublyLinkedList/task.php)
