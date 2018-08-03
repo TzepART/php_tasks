@@ -65,6 +65,12 @@ class DoublyLinkedListDecorator{
         return $this;
     }
 
+    /**
+     * Add new element in position with "key"
+     * http://php.net/manual/ru/spldoublylinkedlist.add.php
+     * @param int $key
+     * @param $value
+     */
     public function addNewElement(int $key,$value)
     {
         $this->doublyLinkedList->add($key,$value);
