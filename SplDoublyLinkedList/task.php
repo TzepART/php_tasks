@@ -125,6 +125,14 @@ class DoublyLinkedListDecorator{
         echo 'Key - '.$this->doublyLinkedList->key().'; Value - '.$this->doublyLinkedList->current()."\n";
         return $this;
     }
+
+    /**
+     * @return SplDoublyLinkedList
+     */
+    public function getDoublyLinkedList(): SplDoublyLinkedList
+    {
+        return $this->doublyLinkedList;
+    }
 }
 
 $doublyLinkedListDecorator = (new DoublyLinkedListDecorator(new SplDoublyLinkedList()))->initDoublyLinkedList();
@@ -136,7 +144,14 @@ $doublyLinkedListDecorator = (new DoublyLinkedListDecorator(new SplDoublyLinkedL
 //$doublyLinkedListDecorator->addNewElement(3,"SeventhElement");
 //$doublyLinkedListDecorator->viewListElements();
 
-$element = $doublyLinkedListDecorator->getFirstElementValue();
-echo 'First element - '.$element."\n";
+//$element = $doublyLinkedListDecorator->getFirstElementValue();
+//echo 'First element - '.$element."\n";
+
+echo 'Count elements - '.$doublyLinkedListDecorator->getDoublyLinkedList()->count()."\n";
+$doublyLinkedListDecorator->addNewElement(3,"NewElement");
+echo 'Count elements - '.$doublyLinkedListDecorator->getDoublyLinkedList()->count()."\n";
+
+
+
 
 
