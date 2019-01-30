@@ -25,7 +25,7 @@ function maxValue(array $values){
     return [$values,$maxValue];
 }
 
-$length = 100000;
+$length = 1000;
 $numbers = range(1, $length);
 shuffle($numbers);
 
