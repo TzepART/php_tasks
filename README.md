@@ -12,3 +12,4 @@ Examples using some PHP features
 4. A function that returns the sum of large numbers, which are used as strings. [link](task4/task.php)
 5. SQL query that will print all the omissions [link](task5/task.sql)
 6. Examples using SplDoublyLinkedList [link](SplDoublyLinkedList/task.php)
+7. Examples using differnt types of sorting [link](sortingTest)
